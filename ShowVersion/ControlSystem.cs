@@ -18,11 +18,13 @@ namespace ShowVersion
         private string procSerial = CrestronEnvironment.SystemInfo.SerialNumber;
         private string procFirmware = InitialParametersClass.FirmwareVersion;
         private string procHostname = Dns.GetHostName();
-        private string procId = InitialParametersClass.RoomId;
-        public string macAddress = "";
+        private string procType = InitialParametersClass.ControllerPromptName;
+        public string macAddress = CrestronEthernetHelper.GetEthernetParameter(CrestronEthernetHelper.ETHERNET_PARAMETER_TO_GET.GET_MAC_ADDRESS, 0);
+        public string ipAddress = CrestronEthernetHelper.GetEthernetParameter(CrestronEthernetHelper.ETHERNET_PARAMATER_TO_GET.GET_CURRENT_IP_ADDRESS, 0);
 
         string cmdResponse = "";
         string versionResponse = "";
+        string uptimeResponse = "";
 
         public ControlSystem()
             : base()
@@ -53,9 +55,7 @@ namespace ShowVersion
 
                 CrestronConsole.SendControlSystemCommand("progcomments:1", ref cmdResponse);
                 CrestronConsole.SendControlSystemCommand("ver", ref versionResponse);
-
-                var adapterId = CrestronEthernetHelper.GetAdapterdIdForSpecifiedAdapterType(EthernetAdapterType.EthernetLANAdapter);
-                macAddress = CrestronEthernetHelper.GetEthernetParameter(CrestronEthernetHelper.ETHERNET_PARAMETER_TO_GET.GET_MAC_ADDRESS, adapterId);
+                CrestronConsole.SendControlSystemCommand("uptime", ref uptimeResponse);
             }
             catch (Exception e)
             {
@@ -72,10 +72,12 @@ namespace ShowVersion
                 {
                     args.Context.Response.StatusCode = 200;
                     args.Context.Response.StatusDescription = "OK";
-                    args.Context.Response.ContentType = "application/vnd.collection+json";
+                    args.Context.Response.ContentType = "application/json";
 
                     string[] procVersion = versionResponse.Split(',');
                     string[] progComment = cmdResponse.Split('\n');
+                    string[] procUptime = uptimeResponse.Split('\n');
+                    string uptimeDays = procUptime[0].Replace("The system has been running for ", "");
 
                     // Create a simple JSON Object to send back to the frontend
                     // ( data:{ id:"",hostname:"",version:"",puf:"",serial:"",mac:"",systemname:"",compiled:"",uptime:"" } }
@@ -84,9 +86,10 @@ namespace ShowVersion
                         {
                             "data", new JObject
                             {
-                                { "id", procId },
+                                { "id", ipAddress },
                                 { "hostname", procHostname },
                                 { "version", procVersion[0].Split('[')[1] },
+                                { "uptime", uptimeDays.Split('.')[0] },
                                 { "puf", procFirmware },
                                 { "serial", procSerial },
                                 { "mac", macAddress },
@@ -101,7 +104,18 @@ namespace ShowVersion
                 }
                 else
                 {
-                    args.Context.Response.Write("Unhandled Route!", true);
+                    JObject errObject = new JObject
+                    {
+                        {
+                            "data", new JObject
+                            {
+                                { "status", "error" },
+                                { "msg", "Unhandled route" }
+                            }
+                        }
+                    };
+                    string jsonError = JsonConvert.SerializeObject(errObject);
+                    args.Context.Response.Write(jsonError, true);
                 }
             }
             catch (NullReferenceException e)
@@ -156,12 +170,6 @@ namespace ShowVersion
         {
             switch (programStatusEventType)
             {
-                case (eProgramStatusEventType.Paused):
-                    //The program has been paused.  Pause all user threads/timers as needed.
-                    break;
-                case (eProgramStatusEventType.Resumed):
-                    //The program has been resumed. Resume all the user threads/timers as needed.
-                    break;
                 case (eProgramStatusEventType.Stopping):
                     myServer.Dispose();
                     myServer.Unregister();
@@ -180,12 +188,6 @@ namespace ShowVersion
         {
             switch (systemEventType)
             {
-                case (eSystemEventType.DiskInserted):
-                    //Removable media was detected on the system
-                    break;
-                case (eSystemEventType.DiskRemoved):
-                    //Removable media was detached from the system
-                    break;
                 case (eSystemEventType.Rebooting):
                     myServer.Dispose();
                     myServer.Unregister();
