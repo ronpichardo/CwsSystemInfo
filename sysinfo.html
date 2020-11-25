@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crestron System Info</title>
+    <style>
+        html {
+            font-family: 'Courier New', Courier, monospace, "Sans-Serif","Times New Roman", Times, serif;
+            background-color: rgb(200, 206, 223);
+            color: rgb(10, 25, 44);
+        }
+        #crestron-data {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Crestron System Info via Web</h2>
+    
+    <div>This example is just sending the response from the Crestron Processor to the frontend.
+        This can be styled to whatever preference of the user who services the Crestron System would like to
+        Customize this.
+    </div>
+
+    <br />
+    
+    <div id="crestron-data"></div>
+    
+</body>
+<script>
+    fetch(`http://localhost/cws/api/ver`)
+        .then(response => response.json())
+        .then(data => {
+            // const { data } = mydata;
+            // console.log(data);
+
+            // displayInfo(data);
+            var mainContainer = document.getElementById('crestron-data');
+            var div = document.createElement('div');
+
+            div.innerHTML = JSON.stringify(data.data);
+            mainContainer.appendChild(div);
+
+        })
+        .catch(e => console.log('Error', e))
+</script>
+</html>
