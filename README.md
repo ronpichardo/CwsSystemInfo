@@ -8,6 +8,7 @@ This is a project that can be used to interact with Crestrons Sandbox version of
 
 An html file can be created and loaded on the processor.  for example if the processor's IP is 10.10.10.41 and the html file is called 'sysinfo.html', you visit 10.10.10.41/sysinfo.html in your browser to view the data
 
+Once the program is compiled, it can be loaded to any other slot of a Crestron Processor.  It does not affect the currently running program, which is great since the program can run independently as an overview of the current system.
 ## Requirements
 
 This was created in C# / Simpl# Pro for Crestron
@@ -19,4 +20,11 @@ For 3-Series Processors:
 
 4-series development you can download the Nuget package via Rider or VisualStudio 2019
 
-SCREENSHOT OF WEBPAGE
+## Example from Webpage
+![image](https://user-images.githubusercontent.com/63974878/100181601-a30f3b80-2ea8-11eb-9d68-c8e073785a6f.png)
+
+## Postman example of hitting the API Route
+
+Here is an example of using Postman to make sure the route is working prior to creating an html file for displaying the data
+
+![image](https://user-images.githubusercontent.com/63974878/100182142-eddd8300-2ea9-11eb-96c0-ac8bd7ce2d91.png)
