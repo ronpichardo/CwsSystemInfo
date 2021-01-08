@@ -20,7 +20,7 @@ namespace ShowVersion
         private string procHostname = Dns.GetHostName();
         private string procType = InitialParametersClass.ControllerPromptName;
         public string macAddress = CrestronEthernetHelper.GetEthernetParameter(CrestronEthernetHelper.ETHERNET_PARAMETER_TO_GET.GET_MAC_ADDRESS, 0);
-        public string ipAddress = CrestronEthernetHelper.GetEthernetParameter(CrestronEthernetHelper.ETHERNET_PARAMATER_TO_GET.GET_CURRENT_IP_ADDRESS, 0);
+        public string ipAddress = CrestronEthernetHelper.GetEthernetParameter(CrestronEthernetHelper.ETHERNET_PARAMETER_TO_GET.GET_CURRENT_IP_ADDRESS, 0);
 
         string cmdResponse = "";
         string versionResponse = "";
