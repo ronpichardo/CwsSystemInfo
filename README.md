@@ -11,10 +11,12 @@ An html file can be created and loaded on the processor.  for example if the pro
 Once the program is compiled, it can be loaded to any other slot of a Crestron Processor.  It does not affect the currently running program, which is great since the program can run independently as an overview of the current system.
 
 Example of loading Compiled Code via the Crestron Toolbox Software:
-
+1. Select the menu item under program in order to get the pop up shown in the image below
+2. Click on "Browse.."
 ![uploadingprogram](https://user-images.githubusercontent.com/63974878/104031729-1fc95100-519b-11eb-9e1d-4c0cf20d4846.png)
 
-
+3. Find the path to the compiled "ShowVersion.cpz" file, shown in the image below( you may need to click the file type to show cpz, lpz is the default )
+4. Select "Open", and then hit Send
 ![SelectImage](https://user-images.githubusercontent.com/63974878/104031774-2e176d00-519b-11eb-9fe8-232a7a3e8b68.png)
 
 ## Requirements
