@@ -1,4 +1,4 @@
-CwsSystemInfo
+# CwsSystemInfo
 
 Crestron System Info via Web
 
@@ -9,6 +9,14 @@ This is a project that can be used to interact with Crestrons Sandbox version of
 An html file can be created and loaded on the processor.  for example if the processor's IP is 10.10.10.41 and the html file is called 'sysinfo.html', you visit 10.10.10.41/sysinfo.html in your browser to view the data
 
 Once the program is compiled, it can be loaded to any other slot of a Crestron Processor.  It does not affect the currently running program, which is great since the program can run independently as an overview of the current system.
+
+Example of loading Compiled Code via the Crestron Toolbox Software:
+
+![uploadingprogram](https://user-images.githubusercontent.com/63974878/104031729-1fc95100-519b-11eb-9e1d-4c0cf20d4846.png)
+
+
+![SelectImage](https://user-images.githubusercontent.com/63974878/104031774-2e176d00-519b-11eb-9fe8-232a7a3e8b68.png)
+
 ## Requirements
 
 This was created in C# / Simpl# Pro for Crestron
